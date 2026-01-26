@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
-    {"offset": {"line": 10, "column": 0}, "map": {"version":3,"sources":["file:///home/user/Programming/All-Fullstack-eCommerce-Projects/babyshop-ecommerce/client/src/app/not-found.tsx"],"sourcesContent":["import NotFoundPageClient from '@/components/common/pages/NotFoundPageClient';\nimport React from 'react';\n\nconst NotFoundPage = () => {\n  return <NotFoundPageClient />;\n};\n\nexport default NotFoundPage;\n"],"names":[],"mappings":";;;;AAAA;;;AAGA,MAAM,eAAe;IACnB,qBAAO,8OAAC,2JAAA,CAAA,UAAkB;;;;;AAC5B;uCAEe","debugId":null}}]
-}
