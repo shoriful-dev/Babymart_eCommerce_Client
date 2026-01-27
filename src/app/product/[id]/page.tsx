@@ -10,6 +10,7 @@ import { fetchData } from '@/lib/api';
 import { Product } from '@/types/type';
 import { Box, Eye, FileQuestion, Share2, Star, Truck } from 'lucide-react';
 import Image from 'next/image';
+import BuyNowButton from '@/components/common/pages/product/BuyNowButton';
 import React from 'react';
 
 const SingleProductPage = async ({
@@ -82,7 +83,7 @@ const SingleProductPage = async ({
                 people are viewing this right now
               </span>
             </p>
-            <Button className="py-5 text-base">Buy now</Button>
+            <BuyNowButton product={product} />
             <div className="flex items-center gap-5 justify-between border-b border-b-babyshopTextLight/50 pb-5">
               <div className="flex items-center gap-2">
                 <FileQuestion /> <p>Ask a Question</p>

@@ -17,19 +17,19 @@ interface CartServerItem {
     averageRating?: number;
     image?: string;
     category:
-      | string
-      | {
-          _id: string;
-          name: string;
-          image: string;
-          categoryType: string;
-        };
+    | string
+    | {
+      _id: string;
+      name: string;
+      image: string;
+      categoryType: string;
+    };
     brand:
-      | string
-      | {
-          _id: string;
-          name: string;
-        };
+    | string
+    | {
+      _id: string;
+      name: string;
+    };
     ratings?: [];
   };
   quantity: number;
@@ -55,11 +55,11 @@ const mapCartItemToProduct = (
     category:
       typeof item.productId.category === 'string'
         ? {
-            _id: item.productId.category,
-            name: '',
-            image: '',
-            categoryType: '',
-          }
+          _id: item.productId.category,
+          name: '',
+          image: '',
+          categoryType: '',
+        }
         : item.productId.category,
     brand:
       typeof item.productId.brand === 'string'
@@ -76,6 +76,7 @@ interface User {
   email: string;
   avatar?: string;
   role: string;
+  createdAt?: string;
   addresses?: Array<{
     _id: string;
     street: string;

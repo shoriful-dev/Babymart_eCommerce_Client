@@ -10,24 +10,24 @@ import { payment } from '@/assets/image';
 
 const informationTab = [
   { title: 'About Us', href: '/about' },
-  { title: 'Top Searches', href: '/search' },
+  { title: 'Help Center', href: '/help' },
   { title: 'Privacy Policy', href: '/privacy' },
   { title: 'Terms and Conditions', href: '/terms' },
-  { title: 'Testimonials', href: '/testimonials' },
+  { title: 'Top Searches', href: '/search' },
 ];
 const CustomerTab = [
-  { title: 'My Account', href: '/account' },
-  { title: 'Track Order', href: '/track-order' },
-  { title: 'Shop', href: '/shop' },
-  { title: 'Wishlist', href: '/wishlist' },
+  { title: 'My Account', href: '/user/profile' },
+  { title: 'My Orders', href: '/user/orders' },
+  { title: 'My Wishlist', href: '/user/wishlist' },
+  { title: 'Shop Now', href: '/shop' },
   { title: 'Returns/Exchange', href: '/returns' },
 ];
 const OthersTab = [
-  { title: 'Partnership Programs', href: '/programs' },
-  { title: 'Associate Program', href: '/programs' },
-  { title: 'Wholesale Socks', href: '/programs' },
-  { title: 'Wholesale Funny Socks', href: '/programs' },
-  { title: 'Others', href: '/others' },
+  { title: 'Partnership Programs', href: '/help' },
+  { title: 'Associate Program', href: '/help' },
+  { title: 'Wholesale Program', href: '/help' },
+  { title: 'Store Locations', href: '/help' },
+  { title: 'Others', href: '/help' },
 ];
 
 const Footer = () => {

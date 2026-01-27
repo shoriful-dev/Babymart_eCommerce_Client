@@ -9,6 +9,7 @@ import AddToCartButton from '../common/AddToCartButton';
 import Link from 'next/link';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 interface ProductsResponse {
   products: Product[];
@@ -16,6 +17,7 @@ interface ProductsResponse {
 }
 
 const SearchInput = () => {
+  const router = useRouter();
   const [search, setSearch] = useState('');
   const [debouncedSearch] = useDebounce(search, 300);
   const [products, setProducts] = useState<Product[]>([]);
@@ -108,7 +110,13 @@ const SearchInput = () => {
       </button>
       <form
         className="relative hidden lg:flex items-center"
-        onSubmit={e => e.preventDefault()}
+        onSubmit={e => {
+          e.preventDefault();
+          if (search.trim()) {
+            router.push(`/search?q=${encodeURIComponent(search.trim())}`);
+            setShowResults(false);
+          }
+        }}
       >
         <Input
           placeholder="Search Products...."
@@ -220,7 +228,7 @@ const SearchInput = () => {
                       ))}
                       <div className="px-4 py-2 bg-gray-50 border-t border-gray-200">
                         <Link
-                          href={`/shop?search=${encodeURIComponent(search)}`}
+                          href={`/search?q=${encodeURIComponent(search)}`}
                           onClick={() => {
                             setShowResults(false);
                             setShowSearch(false);
@@ -348,7 +356,7 @@ const SearchInput = () => {
               ))}
               <div className="px-4 py-2 bg-gray-50 border-t border-gray-200">
                 <Link
-                  href={`/shop?search=${encodeURIComponent(search)}`}
+                  href={`/search?q=${encodeURIComponent(search)}`}
                   onClick={() => {
                     setShowResults(false);
                   }}
