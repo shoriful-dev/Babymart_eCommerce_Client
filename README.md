@@ -2,8 +2,8 @@
 
 A complete e-commerce solution for baby products with a modern client storefront, powerful admin dashboard, and robust backend API.
 
-![Next.js](https://img.shields.io/badge/Next.js-15.4-black?style=flat-square&logo=next.js)
-![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)
+![Next.js](https://img.shields.io/badge/Next.js-16.1-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-19.2-blue?style=flat-square&logo=react)
 ![Vite](https://img.shields.io/badge/Vite-7.0-purple?style=flat-square&logo=vite)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-green?style=flat-square&logo=node.js)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-green?style=flat-square&logo=mongodb)
@@ -41,8 +41,8 @@ BabyShop is a full-stack e-commerce platform specifically designed for baby prod
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| **Next.js** | 15.4.5 | React framework with App Router & Turbopack |
-| **React** | 19.1.0 | UI library |
+| **Next.js** | 16.1.6 | React framework with App Router & Turbopack |
+| **React** | 19.2.4 | UI library |
 | **TypeScript** | 5.9.3 | Type safety |
 | **Tailwind CSS** | 4.x | Utility-first CSS framework |
 | **Zustand** | 5.0.10 | State management |
@@ -144,10 +144,16 @@ babyshop-ecommerce/
 ├── client/                    # Next.js Customer Storefront
 │   ├── src/
 │   │   ├── app/              # App Router pages
+│   │   │   ├── about/        # About page
 │   │   │   ├── auth/         # Login, Register
+│   │   │   ├── help/         # Help Center
+│   │   │   ├── privacy/      # Privacy Policy
 │   │   │   ├── product/      # Product details
-│   │   │   ├── shop/         # Shop page
+│   │   │   ├── returns/      # Returns & Refunds
 │   │   │   ├── search/       # Search results
+│   │   │   ├── shop/         # Shop page
+│   │   │   ├── terms/        # Terms & Conditions
+│   │   │   ├── success/      # Payment success page
 │   │   │   ├── user/         # User pages
 │   │   │   │   ├── cart/     # Shopping cart
 │   │   │   │   ├── wishlist/ # Wishlist
@@ -360,7 +366,7 @@ http://localhost:5000/api-docs
 
 ## 👨‍💻 Author
 
-**Noor Mohammad**
+**Shoriful Islam**
 
 ---
 
