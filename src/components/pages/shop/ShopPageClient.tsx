@@ -125,9 +125,12 @@ const ShopPageClient = ({ categories, brands }: Props) => {
   );
 
   useEffect(() => {
-    fetchProducts();
     setCurrentPage(1);
-  }, [category, brand, search, priceRange, sortOrder, fetchProducts]);
+  }, [category, brand, search, priceRange, sortOrder]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   useEffect(() => {
     if (currentPage > 1) {
@@ -139,7 +142,7 @@ const ShopPageClient = ({ categories, brands }: Props) => {
     if (newlyLoadedProducts.length > 0) {
       const timer = setTimeout(() => {
         setNewlyLoadedProducts([]);
-      }, 100);
+      }, 1500); // Increased from 100ms to 1500ms to allow animation to complete
       return () => clearTimeout(timer);
     }
   }, [newlyLoadedProducts]);
