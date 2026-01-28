@@ -1,4 +1,4 @@
-const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const baseURL = process.env.NEXT_PUBLIC_API_URL!;
 
 type ApiError = {
   message: string;
