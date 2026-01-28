@@ -48,22 +48,22 @@ const AddressSelection: React.FC<AddressSelectionProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const { authUser, auth_token } = useUserStore();
 
-  // Update form when dialog opens
-  useEffect(() => {
-    if (isAddDialogOpen) {
-      resetForm();
-    }
-  }, [isAddDialogOpen, addresses.length]);
-
-  const resetForm = () => {
+  const resetForm = React.useCallback(() => {
     setFormData({
       street: '',
       city: '',
       country: '',
       postalCode: '',
-      isDefault: addresses.length === 0, // Auto-check if this is the first address
+      isDefault: addresses.length === 0,
     });
-  };
+  }, [addresses.length]);
+
+  // Update form when dialog opens
+  useEffect(() => {
+    if (isAddDialogOpen) {
+      resetForm();
+    }
+  }, [isAddDialogOpen, resetForm]);
 
   const handleAddAddress = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -599,6 +599,6 @@ const AddressSelection: React.FC<AddressSelectionProps> = ({
       </CardContent>
     </Card>
   );
-};
+};;
 
 export default AddressSelection;

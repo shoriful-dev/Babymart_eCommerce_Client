@@ -265,7 +265,7 @@ export const useUserStore = create<UserState>()(
         }
 
         try {
-          const response = await authApi.get('/auth/profile');
+          const response = await authApi.get<User>('/auth/profile');
 
           if (response.data) {
             set({
@@ -312,7 +312,7 @@ export const useUserStore = create<UserState>()(
       },
       register: async data => {
         try {
-          const response = await authApi.post('/auth/register', data);
+          const response = await authApi.post<User>('/auth/register', data);
 
           if (!response.data) {
             throw new Error(response.error?.message || 'Registration failed');

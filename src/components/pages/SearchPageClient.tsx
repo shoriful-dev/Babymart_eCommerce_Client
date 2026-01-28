@@ -7,16 +7,7 @@ import { fetchData } from '@/lib/api';
 import { Product } from '@/types/type';
 import ProductCard from '../common/ProductCard';
 import { motion } from 'framer-motion';
-import { 
-  Search, 
-  SlidersHorizontal, 
-  ShoppingBag, 
-  Loader2, 
-  FilterX,
-  SortAsc,
-  LayoutGrid,
-  List
-} from 'lucide-react';
+import { Search, SlidersHorizontal, FilterX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -29,7 +20,7 @@ const SearchPageClient = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const query = searchParams.get('q') || '';
-  
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchInput, setSearchInput] = useState(query);
@@ -40,7 +31,9 @@ const SearchPageClient = () => {
       try {
         // We'll append the query to the products endpoint
         // Assuming the backend supports a 'search' or 'name' parameter
-        const data = await fetchData<ProductsResponse>(`/products?search=${query}&perPage=20`);
+        const data = await fetchData<ProductsResponse>(
+          `/products?search=${query}&perPage=20`,
+        );
         setProducts(data?.products || []);
       } catch (error) {
         console.error('Search error:', error);
@@ -79,27 +72,35 @@ const SearchPageClient = () => {
                   className="block w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-babyshopSky focus:border-transparent outline-none transition-all text-lg shadow-inner"
                   placeholder="Search for products, categories..."
                   value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
+                  onChange={e => setSearchInput(e.target.value)}
                 />
               </div>
-              <Button type="submit" className="h-full px-8 rounded-2xl bg-babyshopSky hover:bg-babyshopSky/90 font-bold text-lg hidden md:flex">
+              <Button
+                type="submit"
+                className="h-full px-8 rounded-2xl bg-babyshopSky hover:bg-babyshopSky/90 font-bold text-lg hidden md:flex"
+              >
                 Search
               </Button>
             </form>
-            
+
             {query && (
               <div className="mt-4 flex items-center justify-between">
                 <p className="text-gray-500">
-                  Search results for "<span className="text-babyshopSky font-bold">{query}</span>" 
+                  Search results for
+                  <span className="text-babyshopSky font-bold">{query}</span>
                   <span className="ml-2 bg-gray-100 px-2 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">
                     {products.length} Items
                   </span>
                 </p>
                 <div className="flex gap-2">
-                   <Button variant="ghost" size="sm" className="rounded-xl h-10 px-4 text-gray-500">
-                      <SlidersHorizontal className="w-4 h-4 mr-2" />
-                      Filters
-                   </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-xl h-10 px-4 text-gray-500"
+                  >
+                    <SlidersHorizontal className="w-4 h-4 mr-2" />
+                    Filters
+                  </Button>
                 </div>
               </div>
             )}
@@ -119,12 +120,12 @@ const SearchPageClient = () => {
             ))}
           </div>
         ) : products.length > 0 ? (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6"
           >
-            {products.map((product) => (
+            {products.map(product => (
               <motion.div
                 key={product._id}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -137,7 +138,7 @@ const SearchPageClient = () => {
             ))}
           </motion.div>
         ) : (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-24 bg-white rounded-3xl border border-dashed border-gray-200"
@@ -147,14 +148,15 @@ const SearchPageClient = () => {
             </div>
             <h2 className="text-3xl font-black mb-4">No results found</h2>
             <p className="text-gray-500 text-lg mb-8 max-w-md mx-auto">
-              We couldn't find any products matching your search. Try checking your spelling or using more general terms.
+              We couldnt find any products matching your search. Try checking
+              your spelling or using more general terms.
             </p>
-            <Button 
+            <Button
               onClick={() => {
                 setSearchInput('');
                 router.push('/search');
               }}
-              variant="outline" 
+              variant="outline"
               className="rounded-2xl h-14 px-10 font-bold border-babyshopSky text-babyshopSky hover:bg-babyshopSky hover:text-white"
             >
               Clear Search

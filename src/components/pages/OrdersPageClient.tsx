@@ -4,12 +4,13 @@ import React, { useEffect } from 'react';
 import Container from '@/components/common/Container';
 import { useOrderStore, useUserStore } from '@/lib/store';
 import { motion } from 'framer-motion';
-import { Package, Calendar, Clock, ChevronRight, ShoppingBag, Eye, TrendingUp, Search } from 'lucide-react';
+import { Package, Calendar, ChevronRight, ShoppingBag, Eye, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import PriceFormatter from '@/components/common/PriceFormatter';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import Image from 'next/image';
 
 const OrdersPageClient = () => {
   const { auth_token, isAuthenticated } = useUserStore();
@@ -52,7 +53,7 @@ const OrdersPageClient = () => {
         </motion.div>
         <h2 className="text-4xl font-black mb-4 tracking-tighter">Your Wardrobe is Empty</h2>
         <p className="text-gray-500 mb-10 text-center max-w-sm font-medium leading-relaxed">
-          Looks like you haven't discovered our premium collections yet. Let's find something special for your little one!
+          Looks like you have not discovered our premium collections yet. Lets find something special for your little one!
         </p>
         <Link href="/shop">
           <Button className="h-16 px-12 rounded-full bg-babyshopSky text-white shadow-2xl shadow-babyshopSky/20 font-black text-xs uppercase tracking-[0.2em] transform active:scale-95 transition-all">
@@ -153,12 +154,12 @@ const OrdersPageClient = () => {
                       <div className="flex flex-col gap-6">
                         <div className="flex -space-x-6 overflow-hidden">
                           {order.items.slice(0, 4).map((item, idx) => (
-                            <div key={idx} className="h-24 w-24 rounded-[32px] border-8 border-white dark:border-gray-950 bg-gray-50 dark:bg-gray-900 overflow-hidden shadow-2xl relative group-hover:scale-105 transition-transform duration-500 z-[idx]">
-                              <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                            <div key={idx} className="h-24 w-24 rounded-4xl border-8 border-white dark:border-gray-950 bg-gray-50 dark:bg-gray-900 overflow-hidden shadow-2xl relative group-hover:scale-105 transition-transform duration-500 z-[idx]">
+                              <Image src={item.image!} alt={item.name} className="h-full w-full object-cover" />
                             </div>
                           ))}
                           {order.items.length > 4 && (
-                            <div className="h-24 w-24 rounded-[32px] border-8 border-white dark:border-gray-950 bg-babyshopSky text-white flex items-center justify-center font-black text-xl shadow-2xl z-10">
+                            <div className="h-24 w-24 rounded-4xl border-8 border-white dark:border-gray-950 bg-babyshopSky text-white flex items-center justify-center font-black text-xl shadow-2xl z-10">
                                +{order.items.length - 4}
                             </div>
                           )}
@@ -170,7 +171,7 @@ const OrdersPageClient = () => {
 
                       <div className="flex justify-end pr-4">
                         <Link href={`/user/orders/${order._id}`}>
-                          <Button className="h-20 px-12 rounded-[32px] bg-slate-900 text-white dark:bg-white dark:text-black hover:bg-babyshopSky dark:hover:bg-babyshopSky dark:hover:text-white transition-all duration-500 font-black uppercase text-xs tracking-[0.3em] flex gap-6 shadow-2xl shadow-black/10 transform hover:scale-[1.05] active:scale-95 group/btn">
+                          <Button className="h-20 px-12 rounded-4xl bg-slate-900 text-white dark:bg-white dark:text-black hover:bg-babyshopSky dark:hover:bg-babyshopSky dark:hover:text-white transition-all duration-500 font-black uppercase text-xs tracking-[0.3em] flex gap-6 shadow-2xl shadow-black/10 transform hover:scale-[1.05] active:scale-95 group/btn">
                              <Eye className="w-5 h-5 group-hover/btn:rotate-12 transition-transform" />
                              Review Details
                              <div className="w-10 h-10 rounded-full bg-white/20 dark:bg-black/10 flex items-center justify-center group-hover/btn:translate-x-2 transition-transform">

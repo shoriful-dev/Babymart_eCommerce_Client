@@ -36,7 +36,7 @@ const TermsPage = () => {
                 2. Use License
               </h2>
               <p className="text-gray-600 leading-relaxed">
-                Permission is granted to temporarily download one copy of the materials on Babyshop's website for personal, non-commercial transitory viewing only.
+                Permission is granted to temporarily download one copy of the materials on Babyshops website for personal, non-commercial transitory viewing only.
               </p>
             </section>
 

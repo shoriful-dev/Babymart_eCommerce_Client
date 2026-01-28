@@ -16,8 +16,6 @@ import { AlertCircle, CheckCircle, CreditCard, Lock } from 'lucide-react';
 import AddressSelection from './AddressSelection';
 import { Separator } from '../ui/separator';
 import {
-  createCheckoutSession,
-  redirectToCheckout,
   StripeCheckoutItem,
 } from '@/lib/stripe';
 
@@ -32,7 +30,7 @@ const CheckoutPageClient = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { auth_token, authUser, isAuthenticated, verifyAuth } = useUserStore();
-  const { cartItemsWithQuantities, clearCart } = useCartStore();
+  const { cartItemsWithQuantities } = useCartStore();
 
   const orderId = searchParams.get('orderId');
 

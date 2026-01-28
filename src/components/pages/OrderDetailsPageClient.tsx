@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Container from '@/components/common/Container';
 import { useUserStore } from '@/lib/store';
 import { getOrderById, Order } from '@/lib/orderApi';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   Package, 
   Calendar, 
@@ -26,6 +26,7 @@ import Link from 'next/link';
 import PriceFormatter from '@/components/common/PriceFormatter';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import Image from 'next/image';
 
 const OrderDetailsPageClient = () => {
   const { id } = useParams();
@@ -68,11 +69,11 @@ const OrderDetailsPageClient = () => {
              <Skeleton className="h-4 w-48 rounded-full" />
              <Skeleton className="h-12 w-64 rounded-xl" />
           </div>
-          <Skeleton className="h-[400px] w-full rounded-[48px]" />
+          <Skeleton className="h-100 w-full rounded-[48px]" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Skeleton className="h-64 w-full rounded-[32px]" />
-            <Skeleton className="h-64 w-full rounded-[32px]" />
-            <Skeleton className="h-64 w-full rounded-[32px]" />
+            <Skeleton className="h-64 w-full rounded-4xl" />
+            <Skeleton className="h-64 w-full rounded-4xl" />
+            <Skeleton className="h-64 w-full rounded-4xl" />
           </div>
         </div>
       </Container>
@@ -87,7 +88,7 @@ const OrderDetailsPageClient = () => {
         </div>
         <h2 className="text-4xl font-black mb-4 tracking-tighter">Order Lost in Transit</h2>
         <p className="text-gray-500 mb-10 text-center max-w-sm font-medium">
-          We couldn't retrieve the specific details for this order. It might have been archived or the ID is incorrect.
+          We couldnt retrieve the specific details for this order. It might have been archived or the ID is incorrect.
         </p>
         <Link href="/user/orders">
           <Button className="h-14 px-10 rounded-full font-black text-xs uppercase tracking-widest bg-black text-white dark:bg-white dark:text-black">
@@ -148,8 +149,8 @@ const OrderDetailsPageClient = () => {
             transition={{ delay: 0.1 }}
             className="bg-white dark:bg-gray-950 rounded-[48px] p-12 mb-12 border border-white dark:border-gray-900 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] relative overflow-hidden"
           >
-             <div className="absolute top-0 right-0 w-64 h-64 bg-babyshopSky/5 rounded-full blur-[100px] -z-0"></div>
-             <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 rounded-full blur-[100px] -z-0"></div>
+             <div className="absolute top-0 right-0 w-64 h-64 bg-babyshopSky/5 rounded-full blur-[100px] z-0"></div>
+             <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 rounded-full blur-[100px] z-0"></div>
              
              <div className="relative z-10">
                 <div className="flex items-center justify-between mb-12">
@@ -186,7 +187,7 @@ const OrderDetailsPageClient = () => {
 
                     return (
                       <div key={index} className="flex flex-col items-center relative z-10 group">
-                        <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-700 border-8 border-white dark:border-gray-950 shadow-2xl ${active ? 'bg-babyshopSky text-white shadow-babyshopSky/40 rotate-12 scale-110' : 'bg-gray-50 dark:bg-gray-900 text-gray-300'}`}>
+                        <div className={`w-16 h-16 rounded-3xl flex items-center justify-center transition-all duration-700 border-8 border-white dark:border-gray-950 shadow-2xl ${active ? 'bg-babyshopSky text-white shadow-babyshopSky/40 rotate-12 scale-110' : 'bg-gray-50 dark:bg-gray-900 text-gray-300'}`}>
                           <step.icon className={`w-6 h-6 ${active ? 'animate-bounce' : ''}`} />
                         </div>
                         <div className="text-center mt-6">
@@ -200,7 +201,7 @@ const OrderDetailsPageClient = () => {
              </div>
              
              {order.status === 'cancelled' && (
-                <div className="mt-12 p-6 bg-red-500 text-white rounded-[32px] flex items-center gap-6 shadow-xl shadow-red-500/20">
+                <div className="mt-12 p-6 bg-red-500 text-white rounded-4xl flex items-center gap-6 shadow-xl shadow-red-500/20">
                    <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-md">
                       <AlertCircle className="w-8 h-8" />
                    </div>
@@ -233,11 +234,11 @@ const OrderDetailsPageClient = () => {
                       </Badge>
                    </div>
                    
-                   <div className="p-4 space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar">
+                   <div className="p-4 space-y-4 max-h-125 overflow-y-auto custom-scrollbar">
                       {order.items.map((item, index) => (
-                         <div key={index} className="flex items-center gap-8 p-6 rounded-[32px] hover:bg-gray-50 dark:hover:bg-gray-900 transition-all duration-300 group">
+                         <div key={index} className="flex items-center gap-8 p-6 rounded-4xl hover:bg-gray-50 dark:hover:bg-gray-900 transition-all duration-300 group">
                             <div className="w-32 h-32 bg-gray-50 dark:bg-gray-900 rounded-[28px] overflow-hidden border border-white dark:border-gray-800 shadow-xl shrink-0 group-hover:scale-105 transition-transform duration-500">
-                               <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                               <Image src={item.image!} alt={item.name} className="w-full h-full object-cover" />
                             </div>
                             <div className="flex-1 min-w-0">
                                <h4 className="font-black text-xl text-gray-900 dark:text-white truncate group-hover:text-babyshopSky transition-colors">{item.name}</h4>
@@ -322,7 +323,7 @@ const OrderDetailsPageClient = () => {
                          </div>
                          Settlement Source
                       </h4>
-                      <div className="bg-gradient-to-br from-gray-900 to-black p-8 rounded-[36px] shadow-2xl relative overflow-hidden text-white group cursor-default">
+                      <div className="bg-linear-to-br from-gray-900 to-black p-8 rounded-[36px] shadow-2xl relative overflow-hidden text-white group cursor-default">
                          <Sparkles className="absolute top-4 right-4 w-5 h-5 text-babyshopSky/40 group-hover:text-babyshopSky transition-colors" />
                          <div className="relative z-10 flex flex-col justify-between h-32">
                             <div className="flex justify-between items-start">

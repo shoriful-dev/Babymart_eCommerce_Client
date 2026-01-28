@@ -25,18 +25,25 @@ import { Eye, EyeOff, Loader2, LogIn } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { set } from 'date-fns';
 import { toast } from 'sonner';
 import authApi from '@/lib/authApi';
 
-// Define the schema for the login form
+// Define the expected login response structure
+interface LoginResponse {
+  token: string;
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar?: string;
+  createdAt?: string;
+}
+
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
   termsAccepted: z.literal(true, {
-    errorMap: () => ({
-      message: 'You must accept the terms and privacy policy',
-    }),
+    message: 'You must accept the terms and privacy policy',
   }),
 });
 
@@ -59,7 +66,7 @@ const SignInForm = () => {
 
   const login = async (data: LoginFormData): Promise<boolean> => {
     try {
-      const response = await authApi.post('/auth/login', {
+      const response = await authApi.post<LoginResponse>('/auth/login', {
         email: data.email,
         password: data.password,
       });

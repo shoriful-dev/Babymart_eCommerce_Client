@@ -8,7 +8,12 @@ interface CategoriesResponse {
 }
 
 const ShopPage = async () => {
-  const brands = await fetchData<Brand[]>('/brands');
+  let brands: Brand[] = [];
+  try {
+    brands = await fetchData<Brand[]>('/brands');
+  } catch (err) {
+    console.log('Error fetching brands:', err);
+  }
   let categories: Category[] = [];
   let error: string | null = null;
 
@@ -20,7 +25,11 @@ const ShopPage = async () => {
     console.log('error', error);
   }
 
-  return <ShopPageClient categories={categories} brands={brands} />;
+  return (
+    <React.Suspense fallback={<div>Loading shop...</div>}>
+      <ShopPageClient categories={categories} brands={brands} />
+    </React.Suspense>
+  );
 };
 
 export default ShopPage;

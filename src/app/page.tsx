@@ -10,7 +10,12 @@ import { fetchData } from '@/lib/api';
 import { Brand } from '@/types/type';
 
 export default async function Home() {
-  const brands = await fetchData<Brand[]>('/brands');
+  let brands: Brand[] = [];
+  try {
+    brands = await fetchData<Brand[]>('/brands');
+  } catch (err) {
+    console.log('Error fetching brands:', err);
+  }
 
   return (
     <div>

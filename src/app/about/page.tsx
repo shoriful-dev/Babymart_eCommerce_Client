@@ -3,7 +3,7 @@
 import React from 'react';
 import Container from '@/components/common/Container';
 import { motion } from 'framer-motion';
-import { Heart, ShieldCheck, Truck, Star, Users, Globe } from 'lucide-react';
+import { Heart, ShieldCheck, Globe } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 const AboutPage = () => {
@@ -50,7 +50,7 @@ const AboutPage = () => {
          <div className="mt-32 p-12 bg-gray-950 rounded-[40px] text-white">
             <div className="max-w-3xl">
                <h2 className="text-4xl font-black mb-6 tracking-tight">Our Commitment to Quality</h2>
-               <p className="text-gray-400 text-lg leading-relaxed mb-8">From organic cotton apparel to BPA-free feeding accessories, every item in our inventory is hand-picked by our team of baby care specialists. We understand that as a parent, your priority is safety—and it's ours too.</p>
+               <p className="text-gray-400 text-lg leading-relaxed mb-8">From organic cotton apparel to BPA-free feeding accessories, every item in our inventory is hand-picked by our team of baby care specialists. We understand that as a parent, your priority is safety—and ours too.</p>
                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                   <div>
                      <p className="text-3xl font-bold text-babyshopSky">100%</p>

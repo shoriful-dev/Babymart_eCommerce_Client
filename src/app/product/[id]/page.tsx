@@ -5,7 +5,6 @@ import DiscountBadge from '@/components/common/DiscountBadge';
 import ProductActions from '@/components/common/pages/product/ProductActions';
 import ProductDescription from '@/components/common/pages/product/ProductDescription';
 import PriceFormatter from '@/components/common/PriceFormatter';
-import { Button } from '@/components/ui/button';
 import { fetchData } from '@/lib/api';
 import { Product } from '@/types/type';
 import { Box, Eye, FileQuestion, Share2, Star, Truck } from 'lucide-react';
@@ -19,11 +18,16 @@ const SingleProductPage = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-  const product: Product = await fetchData(`/products/${id}`);
-  console.log(product)
+  let product: Product | null = null;
+  try {
+    product = await fetchData<Product>(`/products/${id}`);
+  } catch (err) {
+    console.log('Error fetching product:', err);
+  }
 
-  const discountedPrice =
-    product?.price * (1 - product?.discountPercentage / 100);
+  const discountedPrice = product
+    ? product.price * (1 - (product.discountPercentage || 0) / 100)
+    : 0;
 
   if (!product) {
     return (

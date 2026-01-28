@@ -21,7 +21,7 @@ const ReturnsPage = () => {
                <RefreshCcw className="w-10 h-10 text-babyshopSky" />
             </div>
             <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">Returns & Refunds</h1>
-            <p className="text-xl text-gray-500 max-w-2xl mx-auto">Not happy with your purchase? No problem. We've made our return process as simple as possible.</p>
+            <p className="text-xl text-gray-500 max-w-2xl mx-auto">Not happy with your purchase? No problem. Weve made our return process as simple as possible.</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">

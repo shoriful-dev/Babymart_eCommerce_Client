@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { CheckCircle2, ShoppingBag, ArrowRight, Sparkles, Zap, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -20,8 +20,8 @@ const SuccessPageClient = () => {
     <div className="bg-[#FAFAFA] dark:bg-black min-h-screen overflow-hidden">
       <Container className="py-20 flex flex-col items-center justify-center relative">
         {/* Background glow elements */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-babyshopSky/5 rounded-full blur-[120px] -z-10"></div>
-        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-[100px] -z-10"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-150 bg-babyshopSky/5 rounded-full blur-[120px] -z-10"></div>
+        <div className="absolute bottom-0 right-1/4 w-100 h-100 bg-purple-500/5 rounded-full blur-[100px] -z-10"></div>
 
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -56,17 +56,17 @@ const SuccessPageClient = () => {
           </h1>
           
           <p className="text-xl text-gray-400 font-medium max-w-lg mx-auto leading-relaxed mb-12">
-            Your premium selection is now being curated with care. We've sent the digital receipt to your sanctuary.
+            Your premium selection is now being curated with care. Weve sent the digital receipt to your sanctuary.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 w-full justify-center px-4">
-            <Link href="/user/orders" className="flex-1 max-w-[280px]">
+            <Link href="/user/orders" className="flex-1 max-w-70">
               <Button className="w-full h-16 rounded-[28px] bg-slate-900 text-white dark:bg-white dark:text-black hover:bg-babyshopSky dark:hover:bg-babyshopSky dark:hover:text-white transition-all duration-500 font-black uppercase text-xs tracking-[0.2em] shadow-2xl gap-4 flex items-center justify-center">
                 <ShoppingBag className="w-5 h-5" />
                 Track Order
               </Button>
             </Link>
-            <Link href="/shop" className="flex-1 max-w-[280px]">
+            <Link href="/shop" className="flex-1 max-w-70">
               <Button variant="outline" className="w-full h-16 rounded-[28px] border-2 border-gray-100 dark:border-gray-800 font-black uppercase text-xs tracking-[0.2em] transition-all duration-300 hover:scale-[1.05] flex items-center justify-center gap-4">
                 Explore More
                 <ArrowRight className="w-5 h-5" />

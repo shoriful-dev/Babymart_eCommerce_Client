@@ -14,7 +14,6 @@ import {
   Mail, 
   Phone, 
   ChevronDown,
-  ExternalLink,
   ShieldCheck,
   ShoppingBag,
   FileText,
@@ -29,6 +28,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const faqs = [
   {
@@ -124,7 +124,7 @@ const HelpCenterPageClient = () => {
     <div className="bg-white dark:bg-gray-950 min-h-screen pb-20">
       {/* Dynamic Hero Section */}
       <div className="relative pt-20 pb-32 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-babyshopSky/5 to-white dark:to-gray-950 -z-10"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-linear-to-br from-babyshopSky/5 to-white dark:to-gray-950 -z-10"></div>
         <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-babyshopSky/10 rounded-full blur-[120px] -z-10 animate-pulse"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-100/30 rounded-full blur-[100px] -z-10"></div>
         
@@ -138,12 +138,12 @@ const HelpCenterPageClient = () => {
               <Badge className="mb-6 bg-babyshopSky/10 text-babyshopSky border-babyshopSky/20 px-6 py-1.5 text-sm font-bold uppercase tracking-wider backdrop-blur-sm">
                 24/7 Support Intelligence
               </Badge>
-              <h1 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter leading-none bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent dark:from-white dark:to-gray-400">
+              <h1 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter leading-none bg-linear-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent dark:from-white dark:to-gray-400">
                 Hi, how can we <br /> <span className="text-babyshopSky">help you</span> today?
               </h1>
               
               <div className="relative max-w-2xl mx-auto group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-babyshopSky to-purple-400 rounded-3xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+                <div className="absolute -inset-1 bg-linear-to-r from-babyshopSky to-purple-400 rounded-3xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
                     <Search className="h-6 w-6 text-babyshopSky" />
@@ -345,8 +345,8 @@ const HelpCenterPageClient = () => {
       {/* Modern Contact Section */}
       <Container>
         <div className="bg-gray-950 dark:bg-black rounded-[50px] p-8 md:p-20 text-white relative overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)]">
-          <div className="absolute top-0 right-0 w-[60%] h-[100%] bg-gradient-to-l from-babyshopSky/20 to-transparent pointer-events-none"></div>
-          <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-babyshopSky/10 rounded-full blur-[150px]"></div>
+          <div className="absolute top-0 right-0 w-[60%] h-full bg-linear-to-l from-babyshopSky/20 to-transparent pointer-events-none"></div>
+          <div className="absolute top-[-20%] right-[-10%] w-125 h-125 bg-babyshopSky/10 rounded-full blur-[150px]"></div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative z-10">
             <div className="max-w-xl">
@@ -363,7 +363,7 @@ const HelpCenterPageClient = () => {
                    <div className="flex -space-x-4">
                       {[1,2,3].map(i => (
                         <div key={i} className="w-12 h-12 rounded-full border-4 border-gray-950 bg-gray-800 overflow-hidden ring-2 ring-babyshopSky/30">
-                           <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=Support${i}`} alt="support" />
+                           <Image src={`https://api.dicebear.com/7.x/avataaars/svg?seed=Support${i}`} alt="support" />
                         </div>
                       ))}
                       <div className="w-12 h-12 rounded-full border-4 border-gray-950 bg-babyshopSky flex items-center justify-center text-xs font-bold ring-2 ring-babyshopSky/30">

@@ -11,7 +11,6 @@ import {
   ShieldCheck, 
   Package, 
   Heart, 
-  Settings, 
   LogOut,
   ChevronRight,
   ShoppingBag,
@@ -21,16 +20,18 @@ import {
   Lock,
   Camera,
   Save,
-  CheckCircle2,
   TrendingUp,
   Zap,
-  Sparkles
+  Sparkles,
+  ArrowRight
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import Container from '@/components/common/Container';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const ProfilePage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -90,7 +91,7 @@ const ProfilePage = () => {
                Manage your luxury account, track curated deliveries, and secure your personal archive.
             </p>
           </div>
-          <div className="flex items-center gap-4 bg-white dark:bg-gray-950 p-3 rounded-[32px] border border-white dark:border-gray-900 shadow-xl shadow-gray-200/50 dark:shadow-none pr-8">
+          <div className="flex items-center gap-4 bg-white dark:bg-gray-950 p-3 rounded-4xl border border-white dark:border-gray-900 shadow-xl shadow-gray-200/50 dark:shadow-none pr-8">
              <div className="w-14 h-14 bg-babyshopSky/10 rounded-2xl flex items-center justify-center text-babyshopSky">
                 <ShieldCheck className="w-8 h-8" />
              </div>
@@ -110,13 +111,13 @@ const ProfilePage = () => {
                transition={{ delay: 0.2 }}
                className="bg-white dark:bg-gray-950 rounded-[48px] p-10 border border-white dark:border-gray-900 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.06)] flex flex-col items-center text-center relative overflow-hidden"
             >
-               <div className="absolute top-0 right-0 w-32 h-32 bg-babyshopSky/5 rounded-full blur-3xl -z-0"></div>
+               <div className="absolute top-0 right-0 w-32 h-32 bg-babyshopSky/5 rounded-full blur-3xl z-0"></div>
                
                <div className="relative z-10 w-full flex flex-col items-center">
                   <div className="relative mb-8">
-                    <div className="w-40 h-40 rounded-[35%] ring-8 ring-babyshopSky/5 p-1.5 bg-gradient-to-tr from-babyshopSky/30 to-indigo-500/30 overflow-hidden shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-700">
+                    <div className="w-40 h-40 rounded-[35%] ring-8 ring-babyshopSky/5 p-1.5 bg-linear-to-tr from-babyshopSky/30 to-indigo-500/30 overflow-hidden shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-700">
                        {authUser.avatar ? (
-                         <img src={authUser.avatar} alt={authUser.name} className="w-full h-full object-cover rounded-[30%] border-4 border-white dark:border-gray-900 shadow-inner" />
+                         <Image src={authUser.avatar} alt={authUser.name} className="w-full h-full object-cover rounded-[30%] border-4 border-white dark:border-gray-900 shadow-inner" />
                        ) : (
                          <div className="w-full h-full bg-white dark:bg-gray-800 rounded-[30%] flex items-center justify-center text-5xl font-black text-babyshopSky">
                             {authUser.name.charAt(0).toUpperCase()}
@@ -144,7 +145,7 @@ const ProfilePage = () => {
                            key={tab.id}
                            variant="ghost" 
                            onClick={() => setActiveTab(tab.id as any)}
-                           className={`w-full justify-between px-6 rounded-[24px] h-16 transition-all duration-500 font-black uppercase text-[10px] tracking-[0.2em] relative group ${activeTab === tab.id ? 'bg-babyshopSky text-white shadow-xl shadow-babyshopSky/20 translate-x-4' : 'text-gray-500 hover:text-babyshopSky hover:bg-babyshopSky/5 hover:translate-x-2'}`}
+                           className={`w-full justify-between px-6 rounded-3xl h-16 transition-all duration-500 font-black uppercase text-[10px] tracking-[0.2em] relative group ${activeTab === tab.id ? 'bg-babyshopSky text-white shadow-xl shadow-babyshopSky/20 translate-x-4' : 'text-gray-500 hover:text-babyshopSky hover:bg-babyshopSky/5 hover:translate-x-2'}`}
                         >
                            <div className="flex items-center gap-4">
                               <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'animate-pulse' : ''}`} />
@@ -157,7 +158,7 @@ const ProfilePage = () => {
                      <Button 
                         onClick={handleLogout} 
                         variant="ghost" 
-                        className="w-full justify-start px-6 rounded-[24px] h-16 text-red-500 hover:text-red-600 hover:bg-red-50/50 mt-10 font-black uppercase text-[10px] tracking-[0.2em] gap-4"
+                        className="w-full justify-start px-6 rounded-3xl h-16 text-red-500 hover:text-red-600 hover:bg-red-50/50 mt-10 font-black uppercase text-[10px] tracking-[0.2em] gap-4"
                         disabled={isLoading}
                      >
                         {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <LogOut className="w-5 h-5" />}
@@ -182,8 +183,8 @@ const ProfilePage = () => {
                 {activeTab === 'overview' && (
                   <>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                       <Link href="/user/orders" className="group bg-gradient-to-br from-slate-900 to-black rounded-[48px] p-10 text-white shadow-2xl relative overflow-hidden transition-all hover:shadow-babyshopSky/10">
-                          <div className="relative z-10 flex flex-col h-full justify-between min-h-[140px]">
+                       <Link href="/user/orders" className="group bg-linear-to-br from-slate-900 to-black rounded-[48px] p-10 text-white shadow-2xl relative overflow-hidden transition-all hover:shadow-babyshopSky/10">
+                          <div className="relative z-10 flex flex-col h-full justify-between min-h-35">
                              <div>
                                 <p className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 mb-2">Order Archive</p>
                                 <h3 className="text-4xl font-black tracking-tighter">{orders.length} TOTAL</h3>
@@ -195,7 +196,7 @@ const ProfilePage = () => {
                           <Package className="absolute -right-8 -bottom-8 w-40 h-40 opacity-10 group-hover:scale-110 transition-transform duration-700 rotate-12" />
                        </Link>
                        <Link href="/user/wishlist" className="group bg-white dark:bg-gray-950 rounded-[48px] p-10 border border-white dark:border-gray-900 shadow-xl relative overflow-hidden transition-all">
-                          <div className="relative z-10 flex flex-col h-full justify-between min-h-[140px]">
+                          <div className="relative z-10 flex flex-col h-full justify-between min-h-35">
                              <div>
                                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-300 mb-2">Desire List</p>
                                 <h3 className="text-4xl font-black tracking-tighter text-gray-900 dark:text-white">{wishlistIds.length} UNITS</h3>
@@ -261,7 +262,7 @@ const ProfilePage = () => {
                        <div className="mt-16 pt-16 border-t border-gray-50 dark:border-gray-900 grid grid-cols-1 md:grid-cols-2 gap-12">
                           <div className="space-y-4">
                              <p className="text-[10px] font-black text-gray-300 uppercase tracking-[0.4em]">Account Lineage</p>
-                             <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-900 p-6 rounded-[32px] border border-gray-100 dark:border-gray-800">
+                             <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-900 p-6 rounded-4xl border border-gray-100 dark:border-gray-800">
                                 <Calendar className="w-6 h-6 text-babyshopSky" />
                                 <div>
                                    <p className="text-lg font-black tracking-tighter text-gray-900 dark:text-white uppercase leading-none mb-1">Established On</p>
@@ -271,7 +272,7 @@ const ProfilePage = () => {
                           </div>
                           <div className="space-y-4">
                              <p className="text-[10px] font-black text-gray-300 uppercase tracking-[0.4em]">Protocol Status</p>
-                             <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-900 p-6 rounded-[32px] border border-gray-100 dark:border-gray-800">
+                             <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-900 p-6 rounded-4xl border border-gray-100 dark:border-gray-800">
                                 <ShieldCheck className="w-6 h-6 text-green-500" />
                                 <div>
                                    <p className="text-lg font-black tracking-tighter text-gray-900 dark:text-white uppercase leading-none mb-1">Standard Active</p>
@@ -315,7 +316,7 @@ const ProfilePage = () => {
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8">
                           <Button 
                              variant="outline" 
-                             className="h-24 rounded-[32px] justify-between px-8 border-2 border-gray-50 dark:border-gray-900 hover:border-babyshopSky transition-all group overflow-hidden relative"
+                             className="h-24 rounded-4xl justify-between px-8 border-2 border-gray-50 dark:border-gray-900 hover:border-babyshopSky transition-all group overflow-hidden relative"
                              onClick={() => toast.info('Advanced security features coming soon!')}
                           >
                              <div className="flex flex-col items-start relative z-10">
@@ -327,14 +328,14 @@ const ProfilePage = () => {
                           </Button>
                           <Button 
                              variant="outline" 
-                             className="h-24 rounded-[32px] justify-between px-8 border-2 border-red-50 dark:border-red-950 hover:bg-red-500 hover:text-white transition-all group overflow-hidden relative"
+                             className="h-24 rounded-4xl justify-between px-8 border-2 border-red-50 dark:border-red-950 hover:bg-red-500 hover:text-white transition-all group overflow-hidden relative"
                           >
                              <div className="flex flex-col items-start relative z-10">
                                 <p className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-1">Danger Zone</p>
                                 <p className="text-sm font-black uppercase">Terminate Account</p>
                              </div>
                              <AlertCircle className="w-5 h-5 opacity-40 group-hover:scale-125 transition-all relative z-10" />
-                             <div className="absolute top-0 right-0 w-full h-full bg-red-500 translate-y-24 group-hover:translate-y-0 transition-transform duration-500 -z-0"></div>
+                             <div className="absolute top-0 right-0 w-full h-full bg-red-500 translate-y-24 group-hover:translate-y-0 transition-transform duration-500 z-0"></div>
                           </Button>
                        </div>
                     </div>
@@ -398,10 +399,9 @@ const DetailsView = ({ authUser, updateUser }: any) => {
       }
 
       const response = await authApi.put(`/users/${authUser._id}`, updateData);
-      // Backend response might be structured differently based on previous tools
-      if (response && (response.success || response._id)) {
-        const updatedUser = response.data || response;
-        updateUser(updatedUser);
+      // Backend returns { success: true, data: user } on success
+      if (response && response.success && response.data) {
+        updateUser(response.data);
         toast.success('Identity Archive Updated');
         setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
         setAvatarFile(null);
@@ -429,8 +429,8 @@ const DetailsView = ({ authUser, updateUser }: any) => {
       <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-12 gap-12">
         <div className="md:col-span-4 flex flex-col items-center">
            <div className="relative group">
-              <div className="w-48 h-48 rounded-[40px] ring-8 ring-babyshopSky/5 p-1.5 bg-gradient-to-tr from-babyshopSky/20 to-indigo-500/20 overflow-hidden shadow-2xl transition-all duration-700">
-                 <img 
+              <div className="w-48 h-48 rounded-[40px] ring-8 ring-babyshopSky/5 p-1.5 bg-linear-to-tr from-babyshopSky/20 to-indigo-500/20 overflow-hidden shadow-2xl transition-all duration-700">
+                 <Image 
                    src={avatarPreview || 'https://via.placeholder.com/200'} 
                    alt="Avatar Preview" 
                    className="w-full h-full object-cover rounded-[35%] border-4 border-white dark:border-gray-950" 
@@ -446,7 +446,7 @@ const DetailsView = ({ authUser, updateUser }: any) => {
               <button 
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="absolute bottom-2 right-2 bg-babyshopSky text-white p-5 rounded-[24px] border-4 border-white dark:border-gray-950 shadow-2xl hover:scale-110 active:scale-95 transition-all"
+                className="absolute bottom-2 right-2 bg-babyshopSky text-white p-5 rounded-3xl border-4 border-white dark:border-gray-950 shadow-2xl hover:scale-110 active:scale-95 transition-all"
               >
                 <Camera className="w-6 h-6" />
               </button>
@@ -527,7 +527,7 @@ const DetailsView = ({ authUser, updateUser }: any) => {
           <div className="pt-10 flex flex-col md:flex-row gap-6">
             <Button 
                type="submit" 
-               className="h-20 px-12 rounded-[32px] bg-black text-white dark:bg-white dark:text-black hover:bg-babyshopSky dark:hover:bg-babyshopSky dark:hover:text-white transition-all duration-500 font-black uppercase text-xs tracking-[0.3em] flex gap-6 shadow-2xl flex-1 group" 
+               className="h-20 px-12 rounded-4xl bg-black text-white dark:bg-white dark:text-black hover:bg-babyshopSky dark:hover:bg-babyshopSky dark:hover:text-white transition-all duration-500 font-black uppercase text-xs tracking-[0.3em] flex gap-6 shadow-2xl flex-1 group" 
                disabled={loading}
             >
               {loading ? (
@@ -537,7 +537,7 @@ const DetailsView = ({ authUser, updateUser }: any) => {
               )}
               Execute Synchronization
             </Button>
-            <div className="hidden md:flex items-center gap-4 px-10 bg-gray-50 dark:bg-gray-900 rounded-[32px] text-gray-400 text-[9px] font-black uppercase tracking-[0.2em] leading-tight">
+            <div className="hidden md:flex items-center gap-4 px-10 bg-gray-50 dark:bg-gray-900 rounded-4xl text-gray-400 text-[9px] font-black uppercase tracking-[0.2em] leading-tight">
                <ShieldCheck className="w-5 h-5 text-babyshopSky" />
                Locked by E2E <br /> Encryption
             </div>
