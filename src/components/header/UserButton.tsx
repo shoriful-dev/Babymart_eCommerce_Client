@@ -17,7 +17,6 @@ const UserButton = () => {
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     setMounted(true);
     
@@ -33,7 +32,7 @@ const UserButton = () => {
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [isAuthenticated, authUser, verifyAuth]);
 
   const handleMainClick = (e: React.MouseEvent) => {
     if (!isAuthenticated) {

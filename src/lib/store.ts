@@ -176,9 +176,8 @@ export const useUserStore = create<UserState>()(
           });
           set({ auth_token: token, isAuthenticated: true });
 
-          setTimeout(() => {
-            loadAllUserData(token);
-          }, 150);
+          // Fetch full user profile and data immediately
+          get().verifyAuth();
         } else {
           Cookies.remove('auth_token');
           set({ auth_token: null, isAuthenticated: false, authUser: null });
