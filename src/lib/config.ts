@@ -3,21 +3,54 @@ interface ApiConfig {
   isProduction: boolean;
 }
 
+const DEFAULT_LOCAL_API = 'http://localhost:8000/api';
+
+function isLikelyRemoteApi(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return (
+      host !== 'localhost' && host !== '127.0.0.1' && host !== '[::1]'
+    );
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Get API configuration based on environment
  */
 export const getApiConfig = (): ApiConfig => {
-  // Check if we're in browser or server environment
   const isClient = typeof window !== 'undefined';
 
-  let baseUrl: string;
+  const forceRemote =
+    process.env.NEXT_PUBLIC_USE_REMOTE_API === 'true' ||
+    process.env.USE_REMOTE_API === 'true';
 
-  if (isClient) {
-    // Client-side: use NEXT_PUBLIC_API_URL
-    baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
-  } else {
-    // Server-side: use API_ENDPOINT
-    baseUrl = process.env.API_ENDPOINT || 'http://localhost:8000/api';
+  const configured = (
+    isClient
+      ? process.env.NEXT_PUBLIC_API_URL
+      : process.env.API_ENDPOINT || process.env.NEXT_PUBLIC_API_URL
+  )?.trim();
+
+  let baseUrl = configured && configured.length > 0 ? configured : DEFAULT_LOCAL_API;
+
+  // .env often points NEXT_PUBLIC_API_URL at production (e.g. Vercel) while you run `next dev`
+  // on localhost — then filter fixes on your local API never run. Prefer the local API in
+  // that situation. Production on Vercel keeps env URLs. Opt out: USE_REMOTE_API=true.
+  if (!forceRemote) {
+    if (isClient && typeof window !== 'undefined') {
+      const h = window.location.hostname.toLowerCase();
+      const localUi =
+        h === 'localhost' || h === '127.0.0.1' || h === '[::1]';
+      if (localUi && isLikelyRemoteApi(baseUrl)) {
+        baseUrl = DEFAULT_LOCAL_API;
+      }
+    } else if (!isClient) {
+      const onVercel = Boolean(process.env.VERCEL);
+      if (!onVercel && isLikelyRemoteApi(baseUrl)) {
+        baseUrl = DEFAULT_LOCAL_API;
+      }
+    }
   }
 
   const isProduction =
@@ -38,17 +71,28 @@ export async function fetchWithConfig<T>(
   options?: RequestInit,
 ): Promise<T> {
   const { baseUrl } = getApiConfig();
+  const isClient = typeof window !== 'undefined';
 
   const url = `${baseUrl}${
     endpoint.startsWith('/') ? endpoint : `/${endpoint}`
   }`;
 
-  const defaultOptions: RequestInit = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    next: { revalidate: 100 },
-  };
+  // Browser: never let Next's extended fetch cache/dedupe API reads — shop filters
+  // must hit the network with the full query string every time.
+  // Server (RSC): keep short ISR-style revalidation for public catalog data.
+  const defaultOptions: RequestInit = isClient
+    ? {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store',
+      }
+    : {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        next: { revalidate: 100 },
+      };
 
   const mergedOptions = {
     ...defaultOptions,

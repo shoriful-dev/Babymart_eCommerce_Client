@@ -5,6 +5,8 @@ interface Props {
   className?: string;
 }
 const DiscountBadge = ({ discountPercentage, className }: Props) => {
+  if (!discountPercentage || discountPercentage <= 0) return null;
+
   return (
     <span
       className={cn(

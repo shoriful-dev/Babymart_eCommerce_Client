@@ -7,36 +7,24 @@ import React, { useEffect, useState } from 'react';
 const CartIcon = () => {
   const { cartItemsWithQuantities } = useCartStore();
   const [mounted, setMounted] = useState(false);
+  
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Prevent hydration mismatch by not rendering cart count on server
-  if (!mounted) {
-    return (
-      <Link
-        href={'/user/cart'}
-        className="relative hover:text-babyshopSky hoverEffect"
-      >
-        <ShoppingBag />
-        <span className="absolute -right-2 -top-2 bg-babyshopSky text-babyshopWhite text-[11px] font-medium w-4 h-4 rounded-full flex items-center justify-center">
-          0
-        </span>
-      </Link>
-    );
-  }
-
-  const totalItems = cartItemsWithQuantities.length;
+  const totalItems = mounted ? cartItemsWithQuantities.length : 0;
 
   return (
     <Link
       href={'/user/cart'}
-      className="relative hover:text-babyshopSky hoverEffect"
+      className="relative hover:text-babyshopSky transition-colors"
     >
-      <ShoppingBag size={24} />
-      <span className="absolute -right-2 -top-2 bg-babyshopSky text-babyshopWhite text-[11px] font-medium w-4 h-4 rounded-full flex items-center justify-center">
-        {totalItems > 99 ? '99+' : totalItems}
-      </span>
+      <ShoppingBag size={26} strokeWidth={1.5} />
+      {totalItems > 0 && (
+        <span className="absolute -right-2.5 -top-2 bg-babyshopSky text-babyshopWhite text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">
+          {totalItems > 99 ? '99+' : totalItems}
+        </span>
+      )}
     </Link>
   );
 };

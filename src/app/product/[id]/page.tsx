@@ -11,6 +11,7 @@ import { Box, Eye, FileQuestion, Share2, Star, Truck } from 'lucide-react';
 import Image from 'next/image';
 import BuyNowButton from '@/components/common/pages/product/BuyNowButton';
 import React from 'react';
+import ClientProductDetails from '@/components/common/pages/product/ClientProductDetails';
 
 const SingleProductPage = async ({
   params,
@@ -53,84 +54,8 @@ const SingleProductPage = async ({
               height={500}
             />
           </div>
-          <div className="space-y-5">
-            <DiscountBadge
-              discountPercentage={product?.discountPercentage}
-              className="w-14"
-            />
-            <ProductActions product={product} />
-            {/* Priceview */}
-            <div className="flex items-center gap-5 justify-between">
-              <div className="flex items-center gap-2">
-                <PriceFormatter
-                  amount={product?.price}
-                  className="text-babyshopTextLight line-through font-medium text-lg"
-                />
-                <PriceFormatter amount={discountedPrice} className="text-2xl" />
-              </div>
-              <div className="flex items-center gap-1.5">
-                <div className="flex items-center text-babyshopTextLight">
-                  <Star size={15} />
-                  <Star size={15} />
-                  <Star size={15} />
-                  <Star size={15} />
-                  <Star size={15} />
-                </div>
-                <p className="text-sm">({0} reviews)</p>
-              </div>
-            </div>
-            {/* user view */}
-            <p className="flex items-center gap-1">
-              <Eye />
-              <span className="font-semibold">29</span>{' '}
-              <span className="text-babyshopBlack/70">
-                people are viewing this right now
-              </span>
-            </p>
-            <BuyNowButton product={product} />
-            <div className="flex items-center gap-5 justify-between border-b border-b-babyshopTextLight/50 pb-5">
-              <div className="flex items-center gap-2">
-                <FileQuestion /> <p>Ask a Question</p>
-              </div>{' '}
-              <div className="flex items-center gap-2">
-                <Share2 /> <p>Share</p>
-              </div>
-            </div>
-            {/* Delivery part */}
-            <div className="space-y-2.5">
-              <div className="flex items-center gap-3">
-                <Truck size={30} />{' '}
-                <div>
-                  <p className="font-medium">
-                    Estimated Delivery:{' '}
-                    <span className="text-sm text-babyshopBlack/70">
-                      08 - 15 Jun, 2025
-                    </span>
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Box size={30} />{' '}
-                <div>
-                  <p className="font-medium">
-                    Free Shipping & Returns:{' '}
-                    <span className="text-sm text-babyshopBlack/70">
-                      On all orders over $200.00
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-babyshopTextLight/10 flex flex-col items-center justify-center p-5">
-              <Image
-                src={payment}
-                alt="paymentImage"
-                className="w-72 sm:w-80 mb-2"
-              />
-              <p className="text-sm text-babyshopBlack/70 text-center">
-                Guaranteed safe & secure checkout
-              </p>
-            </div>
+          <div className="w-full">
+            <ClientProductDetails product={product} />
           </div>
         </div>
         <div className="max-w-7xl bg-babyshopWhite shadow-babyshopBlack/10 shadow-sm border border-babyshopTextLight/30 rounded-xl p-5 md:p-10 mt-5">

@@ -16,11 +16,11 @@ const WishlistIcon = () => {
   return (
     <Link
       href={'/user/wishlist'}
-      className="relative hover:text-babyshopSky hoverEffect"
+      className="relative hover:text-babyshopSky transition-colors"
     >
-      <Heart size={24} />
+      <Heart size={26} strokeWidth={1.5} />
       {mounted && wishlistIds.length > 0 && (
-        <span className="absolute -right-2 -top-2 bg-babyshopSky text-babyshopWhite text-[11px] font-medium w-4 h-4 rounded-full flex items-center justify-center">
+        <span className="absolute -right-2.5 -top-2 bg-babyshopSky text-babyshopWhite text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">
           {wishlistIds.length}
         </span>
       )}

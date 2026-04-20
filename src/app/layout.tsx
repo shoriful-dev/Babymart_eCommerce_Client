@@ -16,16 +16,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        <Header />
-        {children}
-        <Footer />
-        <Toaster
-          position="bottom-right"
-          toastOptions={{
-            className: 'rounded-lg shadow-lg border',
-            duration: 4000,
-          }}
-        />
+          <Header />
+          {children}
+          <Footer />
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              className: 'rounded-lg shadow-lg border',
+              duration: 4000,
+            }}
+          />
       </body>
     </html>
   );

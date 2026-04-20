@@ -1,8 +1,12 @@
 import SuccessPageClient from "@/components/pages/SuccessPageClient";
-import React from "react";
+import React, { Suspense } from "react";
 
 const SuccessPage = () => {
-  return <SuccessPageClient />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SuccessPageClient />
+    </Suspense>
+  );
 };
 
 export default SuccessPage;

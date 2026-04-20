@@ -16,8 +16,15 @@ import {
 import { fetchData } from '@/lib/api';
 import { Brand, Category, Product } from '@/types/type';
 import { ChevronDown, ChevronUp, Loader2, X } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 interface ProductsResponse {
   products: Product[];
@@ -30,6 +37,7 @@ interface Props {
 }
 const ShopPageClient = ({ categories, brands }: Props) => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [category, setCategory] = useState<string>(
     searchParams.get('category') || '',
   );
@@ -44,35 +52,110 @@ const ShopPageClient = ({ categories, brands }: Props) => {
   const [newlyLoadedProducts, setNewlyLoadedProducts] = useState<Product[]>([]);
   const [total, setTotal] = useState(0);
   const [priceRange, setPriceRange] = useState<[number, number] | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [currentPage, setCurrentPage] = useState(1);
   const [invalidCategory, setInvalidCategory] = useState<string>('');
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const productsPerPage = 10;
+  const fetchSeqRef = useRef(0);
+  const observerTarget = useRef<HTMLDivElement>(null);
+
+  const filtersKey = useMemo(
+    () =>
+      [
+        searchParams.get('category') || '',
+        searchParams.get('brand') || '',
+        searchParams.get('search') || '',
+        searchParams.get('priceRange') || '',
+        searchParams.get('sortOrder') || 'desc',
+      ].join('|'),
+    [searchParams],
+  );
+
+  useLayoutEffect(() => {
+    setCurrentPage(1);
+  }, [filtersKey]);
+
+  const updateUrl = useCallback(
+    (updates: Record<string, string | null>) => {
+      const params = new URLSearchParams(searchParams.toString());
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value === null || value === '') {
+          params.delete(key);
+        } else {
+          params.set(key, value);
+        }
+      });
+      // Reset page when any filter changes
+      params.set('page', '1');
+      router.push(`/shop?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, router],
+  );
 
   useEffect(() => {
-    const cotegoryFromUrl = searchParams.get('category');
-    if (cotegoryFromUrl) {
-      const categoryExits = categories.some(cat => cat._id === cotegoryFromUrl);
-      if (!categoryExits) {
-        const categoryName = categories.find(
-          cat =>
-            cat.name.toLocaleLowerCase() ===
-            cotegoryFromUrl.toLocaleLowerCase(),
-        );
+    const categoryQuery = searchParams.get('category') || '';
+    const brandQuery = searchParams.get('brand') || '';
+    const searchQuery = searchParams.get('search') || '';
+    const priceRangeQuery = searchParams.get('priceRange') || '';
+    const sortOrderQuery = searchParams.get('sortOrder') || 'desc';
 
-        if (categoryName) {
-          setCategory(cotegoryFromUrl);
-        } else {
-          setInvalidCategory(cotegoryFromUrl);
-          setCategory('');
-        }
-      }
+    setCategory(categoryQuery);
+    setBrand(brandQuery);
+    setSearch(searchQuery);
+    setSortOrder(sortOrderQuery as 'asc' | 'desc');
+
+    if (priceRangeQuery) {
+      const [min, max] = priceRangeQuery.split('-').map(Number);
+      setPriceRange([min, max]);
+    } else {
+      setPriceRange(null);
     }
+
+    // If ID is provided in URL, check if it's valid
+    if (categoryQuery) {
+      const categoryExits = categories.some(cat => cat._id === categoryQuery);
+      if (!categoryExits) {
+        setInvalidCategory(categoryQuery);
+      } else {
+        setInvalidCategory('');
+      }
+    } else {
+      setInvalidCategory('');
+    }
+
+    setCurrentPage(1);
   }, [searchParams, categories]);
 
   const fetchProducts = useCallback(
-    async (loadMore = false) => {
+    async (page: number, loadMore = false) => {
+      fetchSeqRef.current += 1;
+      const seq = fetchSeqRef.current;
+      const urlCategory = searchParams.get('category') || '';
+      const urlBrand = searchParams.get('brand') || '';
+      const urlSearch = searchParams.get('search') || '';
+      const urlPriceRangeRaw = searchParams.get('priceRange') || '';
+      const urlSort =
+        (searchParams.get('sortOrder') as 'asc' | 'desc' | null) || 'desc';
+      let urlPriceTuple: [number, number] | null = null;
+      if (urlPriceRangeRaw) {
+        const parts = urlPriceRangeRaw.split('-').map(Number);
+        if (parts.length >= 2 && !parts.some(Number.isNaN)) {
+          urlPriceTuple = [parts[0], parts[1]];
+        }
+      }
+      const stateMismatch =
+        urlCategory !== category ||
+        urlBrand !== brand ||
+        urlSearch !== search ||
+        urlSort !== sortOrder ||
+        (urlPriceTuple === null && priceRange !== null) ||
+        (urlPriceTuple !== null &&
+          priceRange !== null &&
+          (urlPriceTuple[0] !== priceRange[0] ||
+            urlPriceTuple[1] !== priceRange[1])) ||
+        (urlPriceTuple !== null && priceRange === null);
+
       if (loadMore) {
         setLoadingMore(true);
       } else {
@@ -80,21 +163,102 @@ const ShopPageClient = ({ categories, brands }: Props) => {
       }
       try {
         const params = new URLSearchParams();
-        if (category) params.append('category', category);
-        if (brand) params.append('brand', brand);
-        if (search) params.append('search', search);
-        if (priceRange) {
-          params.append('priceMin', priceRange[0].toString());
-          params.append('priceMax', priceRange[1].toString());
+        const qCategory = urlCategory;
+        const qBrand = urlBrand;
+        const qSearch = urlSearch;
+        const qPrice = urlPriceTuple;
+        const qSort = urlSort;
+
+        if (qCategory && qCategory !== 'all') params.append('category', qCategory);
+        if (qBrand && qBrand !== 'all') params.append('brand', qBrand);
+        if (qSearch) params.append('search', qSearch);
+        if (qPrice) {
+          const hasFiniteUpper =
+            qPrice[1] !== undefined &&
+            qPrice[1] !== Infinity &&
+            !Number.isNaN(qPrice[1]);
+          if (hasFiniteUpper) {
+            const minVal = Number.isNaN(qPrice[0]) ? 0 : qPrice[0];
+            params.append('priceMin', String(minVal));
+            params.append('priceMax', String(qPrice[1]));
+          } else if (
+            qPrice[0] !== undefined &&
+            !Number.isNaN(qPrice[0]) &&
+            qPrice[0] > 0
+          ) {
+            params.append('priceMin', String(qPrice[0]));
+          }
         }
-        params.append('page', currentPage.toString());
+        params.append('page', page.toString());
         params.append('limit', productsPerPage.toString());
-        params.append('sortOrder', sortOrder);
+        params.append('sortOrder', qSort);
+
+        // #region agent log
+        fetch('http://127.0.0.1:7787/ingest/07ccecfd-86cf-4868-9c5c-2ab1d7e072e6', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Debug-Session-Id': 'b93dc8',
+          },
+          body: JSON.stringify({
+            sessionId: 'b93dc8',
+            runId: 'post-fix',
+            hypothesisId: 'H1',
+            location: 'ShopPageClient.tsx:fetchProducts:start',
+            message: 'shop fetch start',
+            data: {
+              seq,
+              page,
+              loadMore,
+              sp: searchParams.toString(),
+              builtQuery: params.toString(),
+              urlCategory,
+              stateCategory: category,
+              urlBrand,
+              stateBrand: brand,
+              urlPriceRangeRaw,
+              statePriceRange: priceRange,
+              stateMismatch,
+            },
+            timestamp: Date.now(),
+          }),
+        }).catch(() => {});
+        // #endregion
 
         const response: ProductsResponse = await fetchData(
           `/products?${params.toString()}`,
         );
-        setTotal(response?.total);
+
+        // #region agent log
+        fetch('http://127.0.0.1:7787/ingest/07ccecfd-86cf-4868-9c5c-2ab1d7e072e6', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Debug-Session-Id': 'b93dc8',
+          },
+          body: JSON.stringify({
+            sessionId: 'b93dc8',
+            runId: 'post-fix',
+            hypothesisId: 'H2',
+            location: 'ShopPageClient.tsx:fetchProducts:response',
+            message: 'shop fetch response',
+            data: {
+              seq,
+              total: response?.total,
+              count: response?.products?.length,
+              builtQuery: params.toString(),
+              stale: seq !== fetchSeqRef.current,
+            },
+            timestamp: Date.now(),
+          }),
+        }).catch(() => {});
+        // #endregion
+
+        if (seq !== fetchSeqRef.current) {
+          return;
+        }
+
+        setTotal(response?.total || 0);
         if (loadMore) {
           setNewlyLoadedProducts(response.products);
           setProducts(prev => [...prev, ...response.products]);
@@ -104,6 +268,9 @@ const ShopPageClient = ({ categories, brands }: Props) => {
         }
       } catch (error) {
         console.log('Failed to fetch products:', error);
+        if (seq !== fetchSeqRef.current) {
+          return;
+        }
         setTotal(0);
         if (!loadMore) {
           setProducts([]);
@@ -113,30 +280,16 @@ const ShopPageClient = ({ categories, brands }: Props) => {
         setLoadingMore(false);
       }
     },
-    [
-      category,
-      brand,
-      search,
-      priceRange,
-      sortOrder,
-      productsPerPage,
-      currentPage,
-    ],
+    [category, brand, search, priceRange, sortOrder, searchParams, productsPerPage],
   );
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [category, brand, search, priceRange, sortOrder]);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-
-  useEffect(() => {
-    if (currentPage > 1) {
-      fetchProducts(true);
+    if (currentPage === 1) {
+      fetchProducts(1, false);
+    } else {
+      fetchProducts(currentPage, true);
     }
-  }, [currentPage, fetchProducts]);
+  }, [currentPage, fetchProducts, filtersKey]);
 
   useEffect(() => {
     if (newlyLoadedProducts.length > 0) {
@@ -158,46 +311,56 @@ const ShopPageClient = ({ categories, brands }: Props) => {
     [100, Infinity],
   ];
 
-  const loadMoreProducts = () => {
+  const loadMoreProducts = useCallback(() => {
     if (hasMoreProducts && !loadingMore) {
       setCurrentPage(prev => prev + 1);
     }
-  };
+  }, [hasMoreProducts, loadingMore]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting) {
+          loadMoreProducts();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [loadMoreProducts]);
 
   const resetCategory = () => {
-    setCategory('');
-    setCurrentPage(1);
-    setInvalidCategory('');
+    updateUrl({ category: null });
   };
 
   const resetBrand = () => {
-    setBrand('');
-    setCurrentPage(1);
+    updateUrl({ brand: null });
   };
 
   const resetSearch = () => {
-    setSearch('');
-    setCurrentPage(1);
+    updateUrl({ search: null });
   };
 
   const resetPriceRange = () => {
-    setPriceRange(null);
-    setCurrentPage(1);
+    updateUrl({ priceRange: null });
   };
 
   const resetSortOrder = () => {
-    setSortOrder('asc');
-    setCurrentPage(1);
+    updateUrl({ sortOrder: 'desc' });
   };
 
   const resetAllFilters = () => {
-    setCategory('');
-    setBrand('');
-    setSearch('');
-    setPriceRange(null);
-    setSortOrder('asc');
-    setCurrentPage(1);
-    setInvalidCategory('');
+    router.push('/shop');
   };
 
   return (
@@ -219,7 +382,7 @@ const ShopPageClient = ({ categories, brands }: Props) => {
             </div>
           )}
         </div>
-        {(category || brand || search || priceRange || sortOrder !== 'asc') && (
+        {(category || brand || search || priceRange || sortOrder !== 'desc') && (
           <Button
             variant={'outline'}
             className="text-sm"
@@ -291,9 +454,7 @@ const ShopPageClient = ({ categories, brands }: Props) => {
               <Select
                 value={category || 'All'}
                 onValueChange={value => {
-                  setCategory(value === 'All' ? '' : value);
-                  setCurrentPage(1);
-                  setInvalidCategory('');
+                  updateUrl({ category: value === 'All' ? null : value });
                 }}
                 disabled={loading}
               >
@@ -332,8 +493,7 @@ const ShopPageClient = ({ categories, brands }: Props) => {
               <Select
                 value={brand || 'All'}
                 onValueChange={value => {
-                  setBrand(value === 'All' ? '' : value);
-                  setCurrentPage(1);
+                  updateUrl({ brand: value === 'All' ? null : value });
                 }}
                 disabled={loading}
               >
@@ -374,13 +534,7 @@ const ShopPageClient = ({ categories, brands }: Props) => {
               <Select
                 value={priceRange ? `${priceRange[0]}-${priceRange[1]}` : 'all'}
                 onValueChange={value => {
-                  if (value === 'all') {
-                    setPriceRange(null);
-                  } else {
-                    const [min, max] = value.split('-').map(Number);
-                    setPriceRange([min, max]);
-                  }
-                  setCurrentPage(1);
+                  updateUrl({ priceRange: value === 'all' ? null : value });
                 }}
                 disabled={loading}
               >
@@ -406,7 +560,7 @@ const ShopPageClient = ({ categories, brands }: Props) => {
                 <label className="block text-sm font-medium mb-2">
                   Sort By
                 </label>
-                {sortOrder !== 'asc' && (
+                {sortOrder !== 'desc' && (
                   <Button
                     variant="link"
                     size="sm"
@@ -421,8 +575,7 @@ const ShopPageClient = ({ categories, brands }: Props) => {
               <Select
                 value={sortOrder}
                 onValueChange={(value: 'asc' | 'desc') => {
-                  setSortOrder(value);
-                  setCurrentPage(1);
+                  updateUrl({ sortOrder: value });
                 }}
                 disabled={loading}
               >
@@ -430,8 +583,8 @@ const ShopPageClient = ({ categories, brands }: Props) => {
                   <SelectValue placeholder="Sort By" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="asc">Newest First</SelectItem>
-                  <SelectItem value="desc">Oldest First</SelectItem>
+                  <SelectItem value="desc">Newest First</SelectItem>
+                  <SelectItem value="asc">Oldest First</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -467,19 +620,8 @@ const ShopPageClient = ({ categories, brands }: Props) => {
                 })}
               </div>
               {hasMoreProducts && (
-                <div className="mt-6 flex flex-col items-center gap-4">
-                  <Button
-                    onClick={loadMoreProducts}
-                    disabled={loadingMore}
-                    variant={'outline'}
-                    className="w-full rounded-sm hover:bg-babyshopSky hover:text-babyshopWhite hoverEffect py-5 mt-2"
-                  >
-                    {loadingMore ? (
-                      <Loader2 className="animate-spin" size={20} />
-                    ) : (
-                      'Load More Products'
-                    )}
-                  </Button>
+                <div ref={observerTarget} className="mt-8 flex flex-col items-center gap-4 py-4">
+                  {loadingMore && <Loader2 className="animate-spin text-babyshopSky" size={32} />}
                 </div>
               )}
               {!hasMoreProducts &&

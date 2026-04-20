@@ -20,13 +20,13 @@ const CustomerTab = [
   { title: 'My Orders', href: '/user/orders' },
   { title: 'My Wishlist', href: '/user/wishlist' },
   { title: 'Shop Now', href: '/shop' },
-  { title: 'Returns/Exchange', href: '/returns' },
+  { title: 'Returns/Exchange', href: '/help/returns' },
 ];
 const OthersTab = [
   { title: 'Partnership Programs', href: '/help' },
   { title: 'Associate Program', href: '/help' },
   { title: 'Wholesale Program', href: '/help' },
-  { title: 'Store Locations', href: '/help' },
+  { title: 'Store Locations', href: '/help/contact' },
   { title: 'Others', href: '/help' },
 ];
 

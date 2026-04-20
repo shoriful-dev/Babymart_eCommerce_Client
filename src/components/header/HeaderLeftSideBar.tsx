@@ -210,6 +210,14 @@ const HeaderLeftSideBar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   <span>Shipping Info</span>
                 </Link>
                 <Link
+                  href="/help/returns"
+                  className="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-gray-50 transition-colors"
+                  onClick={onClose}
+                >
+                  <Package size={18} />
+                  <span>Returns &amp; Exchanges</span>
+                </Link>
+                <Link
                   href="/help/contact"
                   className="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-gray-50 transition-colors"
                   onClick={onClose}

@@ -45,10 +45,10 @@ const ProductDescription = ({ product }: Props) => {
         </TabsList>
         <div className="mt-5 p-5 border border-babyshopTextLight/30 rounded-xl">
           <TabsContent value="description">
-            <h3 className="text-lg font-medium text-babyshopBlack mb-3">
+            <h3 className="text-lg font-bold text-babyshopBlack mb-3">
               Product Description
             </h3>
-            <p className="text-babyshopBlack/70">
+            <p className="text-babyshopBlack font-bold leading-relaxed">
               {product?.description ||
                 'No description available for this product'}
             </p>
