@@ -64,8 +64,8 @@ The platform supports the complete e-commerce lifecycle — from product browsin
 |:---|:---|
 | 🛒 **Client Store** | [babymart-e-commerce-client.vercel.app](https://babymart-e-commerce-client.vercel.app) |
 | 📊 **Admin Dashboard** | [babymart-e-commerce-dashboard.vercel.app](https://babymart-e-commerce-dashboard.vercel.app) |
-| 🔌 **API Server** | Deployed on Vercel (Serverless) |
-| 📚 **API Docs** | `/api/docs` (Swagger UI) |
+| 🔌 **API Server** | https://babymart-e-commerce-server.vercel.app |
+| 📚 **API Docs** | https://babymart-e-commerce-server.vercel.app/api/docs (Swagger UI) |
 
 ---
 
