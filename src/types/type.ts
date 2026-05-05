@@ -12,6 +12,18 @@ export interface Brand {
   description?: string;
 }
 
+export interface Rating {
+  _id: string;
+  user: {
+    _id: string;
+    name: string;
+    avatar?: string;
+  };
+  rating: number;
+  comment: string;
+  createdAt: string;
+}
+
 export interface Product {
   _id: string;
   name: string;
@@ -23,7 +35,7 @@ export interface Product {
   image: string;
   category: Category;
   brand: Brand;
-  ratings: [];
+  ratings: Rating[];
   quantity?: number;
 }
 
