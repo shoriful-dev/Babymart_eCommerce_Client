@@ -31,8 +31,8 @@ const SearchInput = () => {
 
   const fetchFeaturedProducts = async () => {
     try {
-      const response = await fetchData<ProductsResponse>('/products');
-      setFeaturedProducts(response.products);
+      const response = await fetchData<ProductsResponse>('/products?limit=6&sortOrder=desc');
+      setFeaturedProducts(response.products || []);
     } catch (error) {
       console.error('Error fetching featured products:', error);
     }

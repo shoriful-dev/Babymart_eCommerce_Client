@@ -33,7 +33,7 @@ const OrderDetailsPageClient = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       if (!isAuthenticated || !auth_token) {
-        router.push('/login');
+        router.push('/auth/signin');
         return;
       }
 

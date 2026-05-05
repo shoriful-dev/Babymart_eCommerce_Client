@@ -16,7 +16,7 @@ interface ProductsResponse {
 const BabyTravelSection = async () => {
   let products: Product[] = [];
   try {
-    const response: ProductsResponse = await fetchData<ProductsResponse>('/products');
+    const response: ProductsResponse = await fetchData<ProductsResponse>('/products?limit=10&sortOrder=desc');
     // Filter products for baby travel category (simulation: just taking 4)
     products = response?.products?.slice(0, 4) || [];
   } catch (error) {

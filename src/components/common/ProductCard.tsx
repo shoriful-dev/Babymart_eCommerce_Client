@@ -1,3 +1,4 @@
+'use client';
 import { Product } from '@/types/type';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -6,9 +7,9 @@ import DiscountBadge from './DiscountBadge';
 import PriceContainer from './PriceContainer';
 import AddToCartButton from './AddToCartButton';
 
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = React.memo(({ product }: { product: Product }) => {
   return (
-    <div className="border rounded-md group overflow-hidden w-full h-full relative flex flex-col">
+    <div className="border rounded-md group overflow-hidden w-full h-full relative flex flex-col hover:shadow-md transition-shadow">
       <Link
         href={`/product/${product?._id}`}
         className="p-2 overflow-hidden relative block"
@@ -18,7 +19,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           alt={product?.name || "productImage"}
           width={300}
           height={300}
-          loading="lazy"
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
           className="w-full h-32 object-cover group-hover:scale-110 hoverEffect"
         />
         <DiscountBadge
@@ -55,6 +56,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       </div>
     </div>
   );
-};
+});
 
+ProductCard.displayName = 'ProductCard';
 export default ProductCard;

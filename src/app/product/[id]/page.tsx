@@ -1,17 +1,13 @@
-import { payment } from '@/assets/image';
 import BackToHome from '@/components/common/BackToHome';
 import Container from '@/components/common/Container';
-import DiscountBadge from '@/components/common/DiscountBadge';
-import ProductActions from '@/components/common/pages/product/ProductActions';
 import ProductDescription from '@/components/common/pages/product/ProductDescription';
-import PriceFormatter from '@/components/common/PriceFormatter';
 import { fetchData } from '@/lib/api';
 import { Product } from '@/types/type';
-import { Box, Eye, FileQuestion, Share2, Star, Truck } from 'lucide-react';
-import Image from 'next/image';
-import BuyNowButton from '@/components/common/pages/product/BuyNowButton';
 import React from 'react';
 import ClientProductDetails from '@/components/common/pages/product/ClientProductDetails';
+import ProductImageZoom from '@/components/common/pages/product/ProductImageZoom';
+import HomeProductSection from '@/components/home/HomeProductSection';
+import { Layers } from 'lucide-react';
 
 const SingleProductPage = async ({
   params,
@@ -26,14 +22,10 @@ const SingleProductPage = async ({
     console.log('Error fetching product:', err);
   }
 
-  const discountedPrice = product
-    ? product.price * (1 - (product.discountPercentage || 0) / 100)
-    : 0;
-
   if (!product) {
     return (
       <div className="min-h-[50vh] flex flex-col gap-2 items-center justify-center p-10">
-        <h2 className="text-lg">
+        <h2 className="text-lg text-babyshopBlack">
           No products found with <span className=" font-medium">#id</span>{' '}
           <span className="font-semibold text-babyshopSky underline">{id}</span>
         </h2>
@@ -43,23 +35,34 @@ const SingleProductPage = async ({
   }
 
   return (
-    <div className="pt-5 mx-4">
+    <div className="py-10 bg-gray-50/30">
       <Container>
-        <div className="max-w-7xl bg-babyshopWhite shadow-babyshopBlack/10 shadow-sm border border-babyshopTextLight/30 rounded-xl grid grid-cols-1 md:grid-cols-2 gap-10 p-5 md:p-10">
-          <div>
-            <Image
-              src={product?.image}
-              alt="productImage"
-              width={500}
-              height={500}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white rounded-3xl p-6 md:p-12 shadow-sm border border-gray-100">
+          <div className="w-full">
+            <ProductImageZoom 
+              src={product?.image} 
+              alt={product?.name} 
             />
           </div>
           <div className="w-full">
             <ClientProductDetails product={product} />
           </div>
         </div>
-        <div className="max-w-7xl bg-babyshopWhite shadow-babyshopBlack/10 shadow-sm border border-babyshopTextLight/30 rounded-xl p-5 md:p-10 mt-5">
+
+        <div id="product-description-tabs" className="mt-12 bg-white rounded-3xl p-6 md:p-12 shadow-sm border border-gray-100">
           <ProductDescription product={product} />
+        </div>
+
+        {/* Related Products */}
+        <div className="mt-16">
+          <HomeProductSection
+            title="Related Products"
+            subtitle="You might also like these products from the same category"
+            icon={<><Layers size={15} /> Suggested</>}
+            viewAllLink={`/shop?category=${product.category._id}`}
+            apiEndpoint={`/products?category=${product.category._id}&limit=5`}
+            accentColor="text-babyshopSky"
+          />
         </div>
       </Container>
     </div>

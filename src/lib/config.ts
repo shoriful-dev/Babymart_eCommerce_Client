@@ -16,9 +16,6 @@ function isLikelyRemoteApi(url: string): boolean {
   }
 }
 
-/**
- * Get API configuration based on environment
- */
 export const getApiConfig = (): ApiConfig => {
   const isClient = typeof window !== 'undefined';
 
@@ -34,9 +31,6 @@ export const getApiConfig = (): ApiConfig => {
 
   let baseUrl = configured && configured.length > 0 ? configured : DEFAULT_LOCAL_API;
 
-  // .env often points NEXT_PUBLIC_API_URL at production (e.g. Vercel) while you run `next dev`
-  // on localhost — then filter fixes on your local API never run. Prefer the local API in
-  // that situation. Production on Vercel keeps env URLs. Opt out: USE_REMOTE_API=true.
   if (!forceRemote) {
     if (isClient && typeof window !== 'undefined') {
       const h = window.location.hostname.toLowerCase();
@@ -63,9 +57,6 @@ export const getApiConfig = (): ApiConfig => {
   };
 };
 
-/**
- * Enhanced fetch function with better error handling
- */
 export async function fetchWithConfig<T>(
   endpoint: string,
   options?: RequestInit,
@@ -77,9 +68,6 @@ export async function fetchWithConfig<T>(
     endpoint.startsWith('/') ? endpoint : `/${endpoint}`
   }`;
 
-  // Browser: never let Next's extended fetch cache/dedupe API reads — shop filters
-  // must hit the network with the full query string every time.
-  // Server (RSC): keep short ISR-style revalidation for public catalog data.
   const defaultOptions: RequestInit = isClient
     ? {
         headers: {
@@ -120,9 +108,6 @@ export async function fetchWithConfig<T>(
   }
 }
 
-/**
- * Get authentication headers for API requests
- */
 export const getAuthHeaders = (token?: string): Record<string, string> => {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -135,9 +120,6 @@ export const getAuthHeaders = (token?: string): Record<string, string> => {
   return headers;
 };
 
-/**
- * Build query string from parameters
- */
 export const buildQueryString = (
   params: Record<string, string | number | boolean>,
 ): string => {
@@ -153,43 +135,25 @@ export const buildQueryString = (
   return queryString ? `?${queryString}` : '';
 };
 
-/**
- * Common API endpoints
- */
 export const API_ENDPOINTS = {
-  // Auth
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
   REFRESH: '/auth/refresh',
-
-  // Products
   PRODUCTS: '/products',
   PRODUCT_BY_ID: (id: string) => `/products/${id}`,
-
-  // Categories
   CATEGORIES: '/categories',
   CATEGORY_BY_ID: (id: string) => `/categories/${id}`,
-
-  // Brands
   BRANDS: '/brands',
   BRAND_BY_ID: (id: string) => `/brands/${id}`,
-
-  // Users
   USERS: '/users',
   USER_BY_ID: (id: string) => `/users/${id}`,
   USER_PROFILE: '/users/profile',
-
-  // Orders
   ORDERS: '/orders',
   ORDER_BY_ID: (id: string) => `/orders/${id}`,
   USER_ORDERS: (userId: string) => `/orders/user/${userId}`,
-
-  // Cart
   CART: '/cart',
   ADD_TO_CART: '/cart/add',
   REMOVE_FROM_CART: '/cart/remove',
-
-  // Stats & Analytics
   STATS: '/stats',
   ANALYTICS: '/analytics',
 } as const;

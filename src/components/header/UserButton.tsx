@@ -20,7 +20,6 @@ const UserButton = () => {
   useEffect(() => {
     setMounted(true);
     
-    // Automatically fetch user profile if token exists but user data is missing
     if (isAuthenticated && !authUser) {
        verifyAuth();
     }
@@ -37,7 +36,7 @@ const UserButton = () => {
   const handleMainClick = (e: React.MouseEvent) => {
     if (!isAuthenticated) {
         e.preventDefault();
-        openLoginModal();
+        router.push('/auth/signin');
     } else {
         setIsOpen(!isOpen);
     }
@@ -53,7 +52,6 @@ const UserButton = () => {
         router.push('/');
       }
     } catch (error) {
-       // local wipe fallback
        logoutUser();
        setIsOpen(false);
        router.push('/');
@@ -106,7 +104,6 @@ const UserButton = () => {
         </div>
       </button>
 
-      {/* Dropdown Menu - Matched to Image */}
       <AnimatePresence>
         {isOpen && isAuthenticated && (
           <motion.div

@@ -23,10 +23,16 @@ const WishlistButton = ({ product, className }: Props) => {
 
     if (isFavourite) {
       removeFromWishlist(product._id);
-      toast.success('Removed from wishlist');
+      toast.error('Removed from wishlist', {
+        icon: <Heart size={16} className="text-red-500" />,
+        className: 'font-bold'
+      });
     } else {
       addToWishlist(product);
-      toast.success('Added to wishlist');
+      toast.success('Added to wishlist!', {
+        icon: <Heart size={16} className="text-red-500 fill-red-500" />,
+        className: 'font-bold'
+      });
     }
   };
 
@@ -34,17 +40,26 @@ const WishlistButton = ({ product, className }: Props) => {
     <button
       onClick={toggleWishlist}
       className={cn(
-        'p-2 rounded-full transition-all duration-300 hover:scale-110 shadow-sm border',
+        'group relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-500 active:scale-90',
         isFavourite 
-          ? 'bg-red-50 border-red-100 text-red-500' 
-          : 'bg-white border-gray-100 text-gray-400 hover:text-red-400',
+          ? 'bg-red-50 text-red-500 shadow-inner' 
+          : 'bg-white text-gray-400 hover:text-red-500 hover:shadow-xl hover:shadow-red-500/10 border border-gray-100',
         className,
       )}
+      title={isFavourite ? 'Remove from Wishlist' : 'Add to Wishlist'}
     >
       <Heart
-        size={20}
-        className={cn('transition-all', isFavourite && 'fill-current')}
+        size={24}
+        strokeWidth={2.5}
+        className={cn(
+          'transition-all duration-500 group-hover:scale-110', 
+          isFavourite ? 'fill-red-500 scale-110' : 'fill-transparent'
+        )}
       />
+      
+      {!isFavourite && (
+        <span className="absolute inset-0 rounded-2xl bg-red-500/10 scale-0 group-hover:scale-100 transition-transform duration-500 -z-10" />
+      )}
     </button>
   );
 };

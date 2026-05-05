@@ -14,7 +14,7 @@ interface ProductsResponse {
 const ComfyApparelSection = async () => {
   let products: Product[] = [];
   try {
-    const response: ProductsResponse = await fetchData<ProductsResponse>('/products');
+    const response: ProductsResponse = await fetchData<ProductsResponse>('/products?limit=10&sortOrder=desc');
     // Get newest 4 products
     products = response.products.slice(0, 4);
   } catch (error) {

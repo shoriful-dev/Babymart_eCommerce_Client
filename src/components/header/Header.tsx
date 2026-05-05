@@ -1,3 +1,6 @@
+'use client';
+
+import dynamic from 'next/dynamic';
 import React from 'react';
 import TopHeader from './TopHeader';
 import Container from '../common/Container';
@@ -7,8 +10,9 @@ import OrdersIcon from './OrdersIcon';
 import WishlistIcon from './WishlistIcon';
 import UserButton from './UserButton';
 import CartIcon from './CartIcon';
-import Sidebar from './Sidebar';
-import LoginModal from '../auth/LoginModal';
+
+const Sidebar = dynamic(() => import('./Sidebar'), { ssr: false });
+const LoginModal = dynamic(() => import('../auth/LoginModal'), { ssr: false });
 
 const Header = () => {
   return (

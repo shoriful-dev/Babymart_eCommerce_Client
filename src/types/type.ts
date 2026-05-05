@@ -9,6 +9,7 @@ export interface Brand {
   _id: string;
   name: string;
   image?: string;
+  description?: string;
 }
 
 export interface Product {
@@ -52,3 +53,8 @@ export type Banners = {
   createdAt: string;
   updatedAt: string;
 };
+
+export interface ProductsResponse {
+  products: Product[];
+  total: number;
+}

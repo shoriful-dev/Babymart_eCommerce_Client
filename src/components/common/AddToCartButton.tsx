@@ -13,7 +13,7 @@ interface Props {
   product: Product;
   className?: string;
 }
-const AddToCartButton = ({ product, className }: Props) => {
+const AddToCartButton = React.memo(({ product, className }: Props) => {
   const { addToCart } = useCartStore();
   const { isAuthenticated } = useUserStore();
   const [localLoading, setLocalLoading] = useState(false);
@@ -58,6 +58,7 @@ const AddToCartButton = ({ product, className }: Props) => {
       )}
     </Button>
   );
-};
+});
 
+AddToCartButton.displayName = 'AddToCartButton';
 export default AddToCartButton;

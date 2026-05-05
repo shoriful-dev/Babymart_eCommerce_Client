@@ -284,7 +284,7 @@ const CheckoutPageClient = () => {
               The order you&apos;re looking for doesn&apos;t exist or has been
               removed.
             </p>
-            <Button onClick={() => router.push('/cart')}>Return to Cart</Button>
+            <Button onClick={() => router.push('/user/cart')}>Return to Cart</Button>
           </div>
         </div>
       </Container>
@@ -294,7 +294,7 @@ const CheckoutPageClient = () => {
   return (
     <Container className="py-8">
       <PageBreadcrumb
-        items={[{ label: 'Cart', href: '/cart' }]}
+        items={[{ label: 'Cart', href: '/user/cart' }]}
         currentPage="Checkout"
       />
       <div className="mb-8">
