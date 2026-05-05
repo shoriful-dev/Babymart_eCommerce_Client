@@ -12,6 +12,7 @@ import VendorPromoBanner from '@/components/home/VendorPromoBanner';
 import { fetchData } from '@/lib/api';
 import { Brand } from '@/types/type';
 import { Sparkles, TrendingUp, Tag, Clock, Star } from 'lucide-react';
+import CongratulationsMessage from '@/components/common/CongratulationsMessage';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -132,6 +133,9 @@ export default async function Home() {
           </Suspense>
 
           <FeaturedServicesSection />
+          <div className="mt-10 pb-10">
+            <CongratulationsMessage />
+          </div>
         </div>
       </Container>
     </div>

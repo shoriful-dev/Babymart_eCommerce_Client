@@ -18,6 +18,7 @@ import { fetchData } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { Brand, Category, Product, ProductsResponse } from '@/types/type';
 import { ChevronDown, ChevronUp, Loader2, X } from 'lucide-react';
+import CongratulationsMessage from '@/components/common/CongratulationsMessage';
 import { useSearchParams, useRouter } from 'next/navigation';
 import React, {
   useCallback,
@@ -322,8 +323,12 @@ const ShopPageClient = ({ categories, brands }: ShopPageClientProps) => {
                 ))}
               </div>
               
-              <div ref={observerTarget} className="h-20 flex items-center justify-center mt-10">
-                {loadingMore && <Loader2 className="animate-spin text-babyshopSky" size={32} />}
+              <div ref={observerTarget} className="flex items-center justify-center mt-4 mb-10">
+                {loadingMore ? (
+                  <Loader2 className="animate-spin text-babyshopSky" size={32} />
+                ) : !hasMoreProducts && products.length > 0 && (
+                  <CongratulationsMessage />
+                )}
               </div>
             </div>
           ) : (

@@ -8,6 +8,7 @@ import { Heart, ShoppingCart, Trash2, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import ProductCard from '@/components/common/ProductCard';
+import CongratulationsMessage from '@/components/common/CongratulationsMessage';
 import { Badge } from '@/components/ui/badge';
 
 const WishlistPageClient = () => {
@@ -74,6 +75,10 @@ const WishlistPageClient = () => {
             </motion.div>
           ))}
         </AnimatePresence>
+      </div>
+
+      <div className="mt-10">
+        <CongratulationsMessage />
       </div>
 
       {wishlistItems.length > 0 && (
